@@ -1,0 +1,5 @@
+src/message
+nimcache
+src/sobot
+sobot.db
+sobot.toml
