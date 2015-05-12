@@ -1,4 +1,4 @@
-import db_sqlite, irc, os, strutils, times, parsetoml
+import command, db_sqlite, irc, os, strutils, times, parsetoml
 
 type
   Bot = object
@@ -10,11 +10,12 @@ type
     host: string
     password: string
 
-var t = parsetoml.parseFile("./sobot.conf")
+var t = parsetoml.parseFile("./sobot.toml")
 
 var
   bot: Bot = Bot()
   server: Server = Server()
+  cmd: Command
 
 bot.nick = t.getString("bot.nick")
 bot.channel = t.getString("bot.channel")
@@ -59,6 +60,11 @@ while true:
           client.privmsg(event.origin, "hello")
         of "!lag":
           client.privmsg(event.origin, formatFloat(client.getLag))
+        of "!load":
+          cmd = loadCommand("hello")
+          var result = cmd.handler(
+            event.nick.cstring, event.user.cstring, event.host.cstring, event.origin.cstring, msg.cstring)
+          client.privmsg(event.origin, $result)
         else:
           discard
         discard db.tryExec(sql"INSERT INTO Chatlines VALUES(NULL, ?, ?, ?, ?, ?, ?);", getTime().toSeconds(), event.nick, event.user, event.host, event.params[0], msg)
