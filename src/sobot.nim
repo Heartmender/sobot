@@ -41,6 +41,8 @@ var
 
 discard db.tryExec(schema)
 
+echo "Connecting to " & server.host & "..."
+
 client.connect()
 
 while true:
@@ -51,8 +53,10 @@ while true:
       if event.cmd == MNumeric:
         if event.numeric == "001":
           client.privmsg("NickServ", "id " & server.password)
+          echo "Identifying to NickServ..."
           os.sleep(3000)
           client.join(bot.channel)
+          echo "Connected and joined to " & bot.channel
       if event.cmd == MPrivMsg:
         var msg = event.params[event.params.high]
         case msg
@@ -68,7 +72,5 @@ while true:
         else:
           discard
         discard db.tryExec(sql"INSERT INTO Chatlines VALUES(NULL, ?, ?, ?, ?, ?, ?);", getTime().toSeconds(), event.nick, event.user, event.host, event.params[0], msg)
-
-      echo(event.raw)
     else:
       discard
