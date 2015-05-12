@@ -1,0 +1,8 @@
+[bot]
+nick = "Sobot"
+channel = "#quoratest123"
+database = "./sobot.db"
+
+[server]
+host = "irc.tulpa.im"
+password = "foobang"
