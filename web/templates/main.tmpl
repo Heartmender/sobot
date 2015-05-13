@@ -1,0 +1,31 @@
+#! stdtmpl
+#proc baseTemplate(content: string, title: string = "Logmon"): string =
+#  result = ""
+<!DOCTYPE html>
+<html>
+	<head>
+		# if title != Logmon":
+		<title>$title - Logmon</title>
+		# else:
+		<title>Logmon</title>
+		# end if
+		<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css"  media="screen,projection"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	</head>
+	<body>
+		<nav class="light-blue lighten-1" role="navigation">
+			<div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo">Tulpa.im</a>
+			</div>
+		</nav>
+
+		<div class="section no-pad-bot" id="index-banner">
+			<div class="container">
+			$content
+			</div>
+		</div>
+
+		<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
+	</body>
+</html>
+# end proc
