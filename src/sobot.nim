@@ -1,4 +1,4 @@
-import command, db_mysql, irc, os, strutils, times, parsetoml
+import command, db_mysql, asyncdispatch, irc, os, strutils, times, parsetoml
 
 type
   Bot = object
@@ -29,7 +29,6 @@ var
   dbname = t.getString("database.database")
 
 var
-  client = newIrc(server.host, nick=bot.nick)
   db = db_mysql.open(dbhost, dbuser, dbpass, dbname)
   schema = sql"""
     CREATE TABLE IF NOT EXISTS Chatlines(
@@ -45,37 +44,41 @@ var
 
 discard db.tryExec(schema)
 
+proc onIrcEvent(client: PAsyncIrc, event: TIrcEvent) {.async.} =
+  case event.typ
+  of EvDisconnected, EvTimeout:
+    await client.reconnect()
+  of EvMsg:
+    if event.cmd == MNumeric:
+      if event.numeric == "001":
+        await client.privmsg("NickServ", "id " & server.password)
+        echo "Identifying to NickServ..."
+        os.sleep(3000)
+        await client.join(bot.channel)
+        echo "Connected and joined to " & bot.channel
+    if event.cmd == MPrivMsg:
+      var msg = event.params[event.params.high]
+      case msg
+      of "!test":
+        await client.privmsg(event.origin, "hello")
+      of "!lag":
+        await client.privmsg(event.origin, formatFloat(client.getLag))
+      of "!load":
+        cmd = loadCommand("hello")
+        var result = cmd.handler(
+          event.nick.cstring, event.user.cstring, event.host.cstring, event.origin.cstring, msg.cstring)
+        await client.privmsg(event.origin, $result)
+        cmd.unloadCommand()
+      else:
+        discard
+      db.exec(sql"INSERT INTO Chatlines VALUES(0, ?, ?, ?, ?, ?, ?);", getTime().toSeconds(), event.nick, event.user, event.host, event.params[0], msg)
+  else:
+    discard
+
+var client = newAsyncIrc(server.host, nick=bot.nick, callback=onIrcEvent)
+
 echo "Connecting to " & server.host & "..."
 
-client.connect()
+asyncCheck client.run()
 
-while true:
-  var event: TIRCEvent
-  if client.poll(event):
-    case event.typ
-    of EvMsg:
-      if event.cmd == MNumeric:
-        if event.numeric == "001":
-          client.privmsg("NickServ", "id " & server.password)
-          echo "Identifying to NickServ..."
-          os.sleep(3000)
-          client.join(bot.channel)
-          echo "Connected and joined to " & bot.channel
-      if event.cmd == MPrivMsg:
-        var msg = event.params[event.params.high]
-        case msg
-        of "!test":
-          client.privmsg(event.origin, "hello")
-        of "!lag":
-          client.privmsg(event.origin, formatFloat(client.getLag))
-        of "!load":
-          cmd = loadCommand("hello")
-          var result = cmd.handler(
-            event.nick.cstring, event.user.cstring, event.host.cstring, event.origin.cstring, msg.cstring)
-          client.privmsg(event.origin, $result)
-          cmd.unloadCommand()
-        else:
-          discard
-        db.exec(sql"INSERT INTO Chatlines VALUES(0, ?, ?, ?, ?, ?, ?);", getTime().toSeconds(), event.nick, event.user, event.host, event.params[0], msg)
-    else:
-      discard
+runForever()
