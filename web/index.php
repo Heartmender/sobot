@@ -31,7 +31,7 @@ if(isset($_SERVER["date"])) {
 }
 ?>
 	<nav class="light-blue lighten-1" role="navigation">
-		<div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Tulpa.im</a>
+		<div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo">Tulpa.im</a>
 		</div>
 	</nav>
 	<div class="section no-pad-bot" id="index-banner">
@@ -54,7 +54,11 @@ $line = null;
 $stmt->bind_result($id, $date, $nick, $line);
 
 while($stmt->fetch()) {
-	echo "<tr><td>$id</td><td>$date</td><td>$nick</td><td>$line</td></tr>";
+	$datetime = new DateTime();
+	$datetime->setTimestamp($date);
+	$datestr = $datetime->format('Y-m-d H:i:s');
+
+	echo "<tr><td>$id</td><td>$datestr</td><td>$nick</td><td>$line</td></tr>";
 }
 ?>
 			</table>
