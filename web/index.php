@@ -64,7 +64,7 @@ while($stmt->fetch()) {
 	$datetime->setTimestamp($date);
 	$datestr = $datetime->format('Y-m-d H:i:s');
 
-	echo "<tr><td>$id</td><td>$datestr</td><td>$nick</td><td>$line</td></tr>";
+	echo "<tr><td>$id</td><td>$datestr</td><td>$nick</td><td>$line</td></tr>\n";
 }
 ?>
 			</table>
