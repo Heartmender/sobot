@@ -42,7 +42,6 @@ if(isset($_SERVER["date"])) {
 	<div class="section no-pad-bot" id="index-banner">
 		<div class="container">
 			<h1 class="header center orange-text">Logmon</h1>
-			<br><br>
 			<table>
 				<tr><td>id</td><td>date</td><td>nick</td><td>message</td></tr>
 <?php
