@@ -13,7 +13,6 @@
 <?php
 include './config.php';
 
-
 if(isset($_SERVER["channel"])) {
 	$channel = $_SERVER["channel"];
 } else {
@@ -21,13 +20,19 @@ if(isset($_SERVER["channel"])) {
 }
 
 if(isset($_SERVER["date"])) {
-	$stmt = $db->prepare("SELECT id, time, nick, line FROM Chatlines WHERE target = ? AND ? = FROM_UNIXTIME(time, '%Y-%m-%d');");
-	$stmt->bind_param("ss", $channel, $_SERVER["date"]);
+	if (!($stmt = $db->prepare("SELECT id, time, nick, line FROM Chatlines WHERE target = ? AND ? = FROM_UNIXTIME(time, '%Y-%m-%d');"))) {
+		die("Prepare failed: (" . $db->errno . ") " . $db->error);
+	}
+	if (!($stmt->bind_param("ss", $channel, $_SERVER["date"]))) {
+		die("Bind failed: (" . $db->errno . ") " . $db->error);
+	}
 } else {
 	if (!($stmt = $db->prepare("SELECT id, time, nick, line FROM Chatlines WHERE target = ?"))) {
 		die("Prepare failed: (" . $db->errno . ") " . $db->error);
 	}
-	$stmt->bind_param("s", $channel);
+	if (!($stmt->bind_param("s", $channel))) {
+		die("Bind failed: (" . $db->errno . ") " . $db->error);
+	}
 }
 ?>
 	<nav class="light-blue lighten-1" role="navigation">
@@ -50,7 +55,9 @@ $date = null;
 $nick = null;
 $line = null;
 
-$stmt->bind_result($id, $date, $nick, $line);
+if(!($stmt->bind_result($id, $date, $nick, $line))) {
+	die("bind_result failed: (" . $stmt->errno . ") " . $stmt->error);
+}
 
 while($stmt->fetch()) {
 	$datetime = new DateTime();
