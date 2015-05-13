@@ -55,6 +55,7 @@ proc onIrcEvent(client: PAsyncIrc, event: TIrcEvent) {.async.} =
         echo "Identifying to NickServ..."
         os.sleep(3000)
         await client.join(bot.channel)
+        echo event.params[event.params.high]
         echo "Connected and joined to " & bot.channel
     if event.cmd == MPrivMsg:
       var msg = event.params[event.params.high]
