@@ -6,3 +6,7 @@ debug: so
 
 so:
 	make -C modules
+
+.PHONY: web
+web:
+	cp -vrf web/* /home/tulpa.im/domains/logmon.tulpa.im/public_html/
