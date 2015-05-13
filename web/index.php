@@ -21,10 +21,10 @@ if(isset($_SERVER["channel"])) {
 }
 
 if(isset($_SERVER["date"])) {
-	$stmt = $db->prepare("SELECT * FROM Chatlines WHERE target = ? AND ? = FROM_UNIXTIME(time, '%Y-%m-%d');");
+	$stmt = $db->prepare("SELECT id, time, nick, line FROM Chatlines WHERE target = ? AND ? = FROM_UNIXTIME(time, '%Y-%m-%d');");
 	$stmt->bind_param("ss", $channel, $_SERVER["date"]);
 } else {
-	if (!($stmt = $db->prepare("SELECT * FROM Chatlines WHERE target = ?"))) {
+	if (!($stmt = $db->prepare("SELECT id, time, nick, line FROM Chatlines WHERE target = ?"))) {
 		die("Prepare failed: (" . $db->errno . ") " . $db->error);
 	}
 	$stmt->bind_param("s", $channel);
@@ -39,17 +39,27 @@ if(isset($_SERVER["date"])) {
 			<br><br>
 			<h1 class="header center orange-text">Logmon</h1>
 			<br><br>
-		</div>
-	</div>
-
-	<table>
-		<tr><td>id</td><td>date</td><td>nick</td><td>message</td></tr>
+			<table>
+				<tr><td>id</td><td>date</td><td>nick</td><td>message</td></tr>
 <?php
 if (!$stmt->execute()) {
 	die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
 }
+
+$id = null;
+$date = null;
+$nick = null;
+$line = null;
+
+$stmt->bind_result($id, $date, $nick, $line);
+
+while($stmt->fetch()) {
+	echo "<tr><td>$id</td><td>$date</td><td>$nick</td><td>$line</td></tr>";
+}
 ?>
-	</table>
+			</table>
+		</div>
+	</div>
 
 		<!--Import jQuery before materialize.js-->
 		<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
