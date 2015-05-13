@@ -4,7 +4,7 @@ type Handler = proc(nick: cstring,
                     user: cstring,
                     host: cstring,
                     target: cstring,
-                    msg: cstring): cstring
+                    msg: cstring): cstring {.nimcall.}
 
 type
   Command* = object
@@ -15,11 +15,7 @@ type
 proc loadCommand*(name: string): Command =
   var c = Command(name: name)
   c.lib = dynlib.loadLib("modules/" & name & ".so")
-  c.handler = cast[proc(nick: cstring,
-                        user: cstring,
-                        host: cstring,
-                        target: cstring,
-                        msg: cstring): cstring {.nimcall.}](
+  c.handler = cast[Handler](
     c.lib.symAddr("doCommand"))
 
   if c.handler == nil:
