@@ -1,0 +1,17 @@
+<?php
+
+if($_SERVER['PHP_SELF'] === "/config.php") {
+	die("404, page not found");
+}
+
+$dbhost="127.0.0.1:3306";
+$dbuser="tulpa.im";
+$dbpass="asdfasdfgas";
+$dbname="logging";
+
+$db = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+
+// Check connection
+if ($db->connect_error) {
+	die("Connection failed: " . $conn->connect_error);
+}

@@ -13,17 +13,21 @@
 <?php
 include './config.php';
 
-$channel = $_SERVER["channel"];
-if($channel == false) {
+
+if(isset($_SERVER["channel"])) {
+	$channel = $_SERVER["channel"];
+} else {
 	$channel = "#quoratest123";
 }
 
-if($_SERVER["date"]) {
-	$stmt = $db->prepare("SELECT * FROM CHATLINES WHERE channel = ? AND ? = FROM_UNIXTIME(time, '%Y-%m-%d');");
-	$stmt->bind_param($channel, $_SERVER["date"]);
+if(isset($_SERVER["date"])) {
+	$stmt = $db->prepare("SELECT * FROM Chatlines WHERE target = ? AND ? = FROM_UNIXTIME(time, '%Y-%m-%d');");
+	$stmt->bind_param("ss", $channel, $_SERVER["date"]);
 } else {
-	$stmt = $db->prepare("SELECT * FROM CHATLINES WHERE channel = ?");
-	$stmt->bind_param($channel);
+	if (!($stmt = $db->prepare("SELECT * FROM Chatlines WHERE target = ?"))) {
+		die("Prepare failed: (" . $db->errno . ") " . $db->error);
+	}
+	$stmt->bind_param("s", $channel);
 }
 ?>
 	<nav class="light-blue lighten-1" role="navigation">
@@ -42,7 +46,7 @@ if($_SERVER["date"]) {
 		<tr><td>id</td><td>date</td><td>nick</td><td>message</td></tr>
 <?php
 if (!$stmt->execute()) {
-	echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+	die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
 }
 ?>
 	</table>
