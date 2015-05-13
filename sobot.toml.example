@@ -1,8 +1,13 @@
 [bot]
 nick = "Sobot"
 channel = "#quoratest123"
-database = "./sobot.db"
 
 [server]
 host = "irc.tulpa.im"
 password = "foobang"
+
+[database]
+host = "127.0.0.1:3306"
+username = "database"
+password = "asdfasdfasdf"
+database = "logs"

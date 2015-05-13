@@ -1,10 +1,9 @@
-import command, db_sqlite, irc, os, strutils, times, parsetoml
+import command, db_mysql, irc, os, strutils, times, parsetoml
 
 type
   Bot = object
     nick: string
     channel: string
-    database: string
 
   Server = object
     host: string
@@ -19,23 +18,28 @@ var
 
 bot.nick = t.getString("bot.nick")
 bot.channel = t.getString("bot.channel")
-bot.database = t.getString("bot.database")
 
 server.host = t.getString("server.host")
 server.password = t.getString("server.password")
 
 var
+  dbhost = t.getString("database.host")
+  dbuser = t.getString("database.username")
+  dbpass = t.getString("database.password")
+  dbname = t.getString("database.database")
+
+var
   client = newIrc(server.host, nick=bot.nick)
-  db = db_sqlite.open(bot.database, "", "", "")
+  db = db_mysql.open(dbhost, dbuser, dbpass, dbname)
   schema = sql"""
     CREATE TABLE IF NOT EXISTS Chatlines(
-      id INTEGER PRIMARY KEY,
-      time INTEGER,
-      nick TEXT,
-      user TEXT,
-      host TEXT,
-      target TEXT,
-      line TEXT
+      id INTEGER PRIMARY KEY AUTO_INCREMENT,
+      time   INTEGER,
+      nick   VARCHAR(31),
+      user   VARCHAR(10),
+      host   VARCHAR(150),
+      target VARCHAR(150),
+      line   VARCHAR(510)
     );
   """
 
@@ -72,6 +76,6 @@ while true:
           cmd.unloadCommand()
         else:
           discard
-        discard db.tryExec(sql"INSERT INTO Chatlines VALUES(NULL, ?, ?, ?, ?, ?, ?);", getTime().toSeconds(), event.nick, event.user, event.host, event.params[0], msg)
+        db.exec(sql"INSERT INTO Chatlines VALUES(0, ?, ?, ?, ?, ?, ?);", getTime().toSeconds(), event.nick, event.user, event.host, event.params[0], msg)
     else:
       discard
