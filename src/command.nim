@@ -18,3 +18,6 @@ proc loadCommand*(name: string): Command =
     raise newException(Exception, "Could not load modules/" & name & ".so")
 
   return c
+
+proc unloadCommand*(c: Command) =
+  c.lib.unloadLib()

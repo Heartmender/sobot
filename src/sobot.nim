@@ -69,6 +69,7 @@ while true:
           var result = cmd.handler(
             event.nick.cstring, event.user.cstring, event.host.cstring, event.origin.cstring, msg.cstring)
           client.privmsg(event.origin, $result)
+          cmd.unloadCommand()
         else:
           discard
         discard db.tryExec(sql"INSERT INTO Chatlines VALUES(NULL, ?, ?, ?, ?, ?, ?);", getTime().toSeconds(), event.nick, event.user, event.host, event.params[0], msg)
