@@ -29,11 +29,14 @@ routes:
     else:
       channel = "#" & channel
 
-    var rows = db.getAllRows(query, channel)
+    try:
+      var rows = db.getAllRows(query, channel)
 
-    if rows.len() == 0:
-      resp baseTemplate(errorPage("No logs available"))
-    else:
-      resp baseTemplate(showLogs(channel, rows), channel)
+      if rows.len() == 0:
+        resp baseTemplate(errorPage("No logs available"))
+      else:
+        resp baseTemplate(showLogs(channel, rows), channel)
+    except:
+      resp baseTemplate(errorPage(getCurrentExceptionMsg()))
 
 runForever()
