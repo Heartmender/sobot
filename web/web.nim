@@ -49,7 +49,7 @@ routes:
   get "/":
     resp "No logs selected".errorPage.baseTemplate
 
-  get "/logs/@channel?":
+  get "/logs/?@channel?":
     var
       channel = @"channel"
 
