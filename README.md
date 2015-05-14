@@ -47,4 +47,10 @@ Then load it in `src/sobot.nim` and go nuts!
 Web
 ---
 
-Build the project in `web/` and serve it via nginx. It expects 
+Build the project in `web/` and serve it via nginx. It expects to be run with 
+the `sobot.toml` file it its parent directory. It expects:
+
+| route       | description                            |
+|:----------- |:-------------------------------------- |
+| `/`         | logs for sobot's default channel       |
+| `/@channel` | logs for `@channel` with `#` prepended |
