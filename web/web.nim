@@ -22,6 +22,7 @@ const
   robotoregwoff2 = staticRead "public/font/roboto/Roboto-Regular.woff2"
   robotoregwoff  = staticRead "public/font/roboto/Roboto-Regular.woff"
   robotoregttf   = staticRead "public/font/roboto/Roboto-Regular.ttf"
+  robotstxt      = staticRead "robots.txt"
 
 settings:
   port = 5000.Port
@@ -51,6 +52,9 @@ routes:
   get "/static/font/roboto/Roboto-Regular.ttf":
     headers["Cache-Control"] = "public, max-age=31536000"
     resp robotoregttf, "application/octet-stream"
+
+  get "/robots.txt":
+    resp robotstxt, "text/plain"
 
   get "/":
     resp "No logs selected".errorPage.baseTemplate
