@@ -1,7 +1,7 @@
 sobot
 =====
 
-A simple IRC bot in Nim for tulpa.im use. You will need the nim compiler, (this 
+A simple IRC bot in Nim for tulpa.im use. You will need the nim compiler (this 
 is developed and tested on version 0.11.2), a mysql database and a linux server 
 to run it on.
 
