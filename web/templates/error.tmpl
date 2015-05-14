@@ -1,0 +1,9 @@
+#! stdtmpl
+#proc errorPage(message: string = "unknown error"): string =
+#  result = ""
+<h1>Oops!</h1>
+
+<p class="lead" style="align:center">We're sorry but the page you requested couldn't be loaded. Please contact us and let us know what didn't work out.</p>
+<pre>
+$message
+</pre>

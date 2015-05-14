@@ -3,6 +3,7 @@ import jester, asyncdispatch, htmlgen, parsetoml, db_mysql, times, strutils
 var t = parsetoml.parseFile("../sobot.toml")
 
 include "./templates/main.tmpl"
+include "./templates/error.tmpl"
 include "./templates/logs.tmpl"
 
 var
@@ -30,6 +31,9 @@ routes:
 
     var rows = db.getAllRows(query, channel)
 
-    resp baseTemplate(showLogs(channel, rows), channel)
+    if rows.len() == 0:
+      resp baseTemplate(errorPage("No logs available"))
+    else:
+      resp baseTemplate(showLogs(channel, rows), channel)
 
 runForever()
