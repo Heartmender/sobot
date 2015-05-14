@@ -9,4 +9,4 @@ so:
 
 .PHONY: web
 web:
-	cp -vrf web/* /home/tulpa.im/domains/logmon.tulpa.im/public_html/
+	make -C web
