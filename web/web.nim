@@ -29,21 +29,27 @@ settings:
 
 routes:
   get "/static/css/materialize.min.css":
+    headers["Cache-Control"] = "public, max-age=31536000"
     resp materializeCSS, "text/css"
 
   get "/static/js/materialize.min.js":
+    headers["Cache-Control"] = "public, max-age=31536000"
     resp materializeJS, "text/javascript"
 
   get "/static/js/jquery-2.1.1.min.js":
+    headers["Cache-Control"] = "public, max-age=31536000"
     resp jqueryJS, "text/javascript"
 
   get "/static/font/roboto/Roboto-Regular.woff2":
+    headers["Cache-Control"] = "public, max-age=31536000"
     resp robotoregwoff2, "application/font-woff2"
 
   get "/static/font/roboto/Roboto-Regular.woff":
+    headers["Cache-Control"] = "public, max-age=31536000"
     resp robotoregwoff, "application/font-woff"
 
   get "/static/font/roboto/Roboto-Regular.ttf":
+    headers["Cache-Control"] = "public, max-age=31536000"
     resp robotoregttf, "application/octet-stream"
 
   get "/":
