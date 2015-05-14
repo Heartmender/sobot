@@ -33,7 +33,7 @@ var
   schema = sql"""
     CREATE TABLE IF NOT EXISTS Chatlines(
       id INTEGER PRIMARY KEY AUTO_INCREMENT,
-      time   INTEGER,
+      mytime INTEGER,
       nick   VARCHAR(31),
       user   VARCHAR(10),
       host   VARCHAR(150),

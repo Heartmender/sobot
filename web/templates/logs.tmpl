@@ -1,0 +1,15 @@
+#! stdtmpl
+#proc showLogs(channel: string, rows: seq[TRow]): string =
+#  result = ""
+<h4>Logs for $channel</h4>
+<table>
+	<tr><td>id</td><td>date</td><td>nick</td><td>message</td></tr>
+#for row in rows:
+#var date = row[1].parseInt.fromSeconds.getGMTime.format("yyyy-MM-dd hh:mm tt")
+#var id = row[0]
+#var nick = row[2]
+#var message = row[3]
+	<tr><td>$id</td><td>$date</td><td>$nick</td><td>$message</td></tr>
+#end for
+</table>
+#end proc
