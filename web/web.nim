@@ -46,8 +46,10 @@ routes:
   get "/static/font/roboto/Roboto-Regular.ttf":
     resp robotoregttf, "application/octet-stream"
 
+  get "/":
+    resp "No logs selected".errorPage.baseTemplate
 
-  get "/@channel?":
+  get "/logs/@channel?":
     var
       channel = @"channel"
 
