@@ -4,6 +4,7 @@ type
   Bot = object
     nick: string
     channel: string
+    otherchannels: string
 
   Server = object
     host: string
@@ -18,6 +19,7 @@ var
 
 bot.nick = t.getString("bot.nick")
 bot.channel = t.getString("bot.channel")
+bot.otherchannels = t.getString("bot.otherchannels")
 
 server.host = t.getString("server.host")
 server.password = t.getString("server.password")
@@ -56,6 +58,7 @@ proc onIrcEvent(client: PAsyncIrc, event: TIrcEvent) {.async.} =
         echo "Identifying to NickServ..."
         os.sleep(3000)
         await client.join(bot.channel)
+        await client.join(bot.otherchannels)
         echo "Connected and joined to " & bot.channel
     if event.cmd == MPrivMsg:
       var msg = event.params[event.params.high]
