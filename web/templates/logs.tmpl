@@ -18,6 +18,10 @@
 #var id = row[0]
 #var nick = row[2]
 #var message = row[3]
+#if message[0] == '\x01':
+#var splitmessage = message[1..(len(message)-1)].split(" ")[1 .. ^1]
+#message = "* " & splitmessage.join(" ")
+#end if
 		<tr id="message-$id">
 			<td><a href="#message-$id"><i class="teal-text text-lighten-1 mdi-action-label"></i></a></td>
 			<td>$date</td>
