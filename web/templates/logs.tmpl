@@ -2,7 +2,7 @@
 #proc showLogs(channel: string, rows: seq[TRow]): string =
 #  result = ""
 <h4>Logs for $channel</h4>
-<p>Click <a href="#bottom">here</a> to scroll to the bottom.</p>
+<p>Click <a href="#bottom">here</a> to scroll to the bottom. You may click on the <i class="blue-text text-lighten-1 mdi-action-label"></i> icon next to any line to get a link to that part of the log.</p>
 <table class="striped">
 	<thead>
 		<tr>
@@ -19,7 +19,7 @@
 #var nick = row[2]
 #var message = row[3]
 		<tr id="message-$id">
-			<td><a href="#message-$id"><i class="mdi-action-label"></i></a></td>
+			<td><a href="#message-$id"><i class="blue-text text-lighten-1 mdi-action-label"></i></a></td>
 			<td>$date</td>
 			<td>$nick</td>
 			<td>$message</td>
