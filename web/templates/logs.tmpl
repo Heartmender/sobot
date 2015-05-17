@@ -7,7 +7,7 @@
 	<thead>
 		<tr>
 			<td data-field="id"></td>
-			<td data-field="date" style="min-width: 200px">Timestamp</td>
+			<td data-field="date" style="min-width: 200px; max-width: 200px">Timestamp</td>
 			<td data-field="nick">Nickname</td>
 			<td data-field="message">Message</td>
 		</tr>
@@ -21,8 +21,8 @@
 		<tr id="message-$id">
 			<td><a href="#message-$id"><i class="teal-text text-lighten-1 mdi-action-label"></i></a></td>
 			<td>$date</td>
-			<td>$nick</td>
-			<td>$message</td>
+			<td style="font-family: monospace">$nick</td>
+			<td style="font-family: monospace">$message</td>
 		</tr>
 #end for
 	</tbody>
