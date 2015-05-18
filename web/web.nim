@@ -14,7 +14,7 @@ var
   dbname = t.getString("database.database")
 
   db = db_mysql.open(dbhost, dbuser, dbpass, dbname)
-  query = sql"SELECT id, mytime, nick, line FROM Chatlines WHERE target = ?"
+  query = sql"SELECT id, UNIX_TIMESTAMP(mytime), nick, line FROM Chatlines WHERE target = ?"
   distinctquery = sql"SELECT DISTINCT target FROM Chatlines ORDER BY target;"
   calloutquery = sql"SELECT id, target, UNIX_TIMESTAMP(mytime), nick, line FROM Chatlines WHERE target = ? ORDER BY id DESC LIMIT 1;"
 
