@@ -35,12 +35,12 @@ var
   schema = sql"""
     CREATE TABLE IF NOT EXISTS Chatlines(
       id INTEGER PRIMARY KEY AUTO_INCREMENT,
-      mytime INTEGER,
       nick   VARCHAR(31),
       user   VARCHAR(10),
       host   VARCHAR(150),
       target VARCHAR(150),
-      line   VARCHAR(510)
+      line   VARCHAR(510),
+      mytime DATETIME
     );
   """
 
@@ -76,7 +76,7 @@ proc onIrcEvent(client: PAsyncIrc, event: TIrcEvent) {.async.} =
         cmd.unloadCommand()
       else:
         discard
-      db.exec(sql"INSERT INTO Chatlines VALUES(0, ?, ?, ?, ?, ?, ?);", getTime().toSeconds(), event.nick, event.user, event.host, event.params[0], msg)
+      db.exec(sql"INSERT INTO Chatlines VALUES(0, ?, ?, ?, ?, ?, FROM_UNIXTIME(?));", event.nick, event.user, event.host, event.params[0], msg, getTime().toSeconds())
   else:
     discard
 

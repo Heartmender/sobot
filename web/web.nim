@@ -16,7 +16,7 @@ var
   db = db_mysql.open(dbhost, dbuser, dbpass, dbname)
   query = sql"SELECT id, mytime, nick, line FROM Chatlines WHERE target = ?"
   distinctquery = sql"SELECT DISTINCT target FROM Chatlines ORDER BY target;"
-  calloutquery = sql"SELECT id, target, mytime, nick, line FROM Chatlines WHERE target = ? ORDER BY id DESC LIMIT 1;"
+  calloutquery = sql"SELECT id, target, UNIX_TIMESTAMP(mytime), nick, line FROM Chatlines WHERE target = ? ORDER BY id DESC LIMIT 1;"
 
 const
   robotstxt      = staticRead "robots.txt"
