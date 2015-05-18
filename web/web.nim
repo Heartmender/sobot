@@ -49,10 +49,10 @@ routes:
       var rows = db.getAllRows(query, channel)
 
       if rows.len() == 0:
-        resp baseTemplate(errorPage("No logs available"))
+        resp "No logs available".errorPage.baseTemplate
       else:
-        resp baseTemplate(showLogs(channel, rows), channel)
+        resp channel.showLogs(rows).baseTemplate channel
     except:
-      resp baseTemplate(errorPage(getCurrentExceptionMsg()))
+      resp getCurrentExceptionMsg().errorPage.baseTemplate
 
 runForever()
