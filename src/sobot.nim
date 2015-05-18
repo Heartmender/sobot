@@ -60,6 +60,7 @@ proc onIrcEvent(client: PAsyncIrc, event: TIrcEvent) {.async.} =
         await client.join(bot.channel)
         await client.join(bot.otherchannels)
         echo "Connected and joined to " & bot.channel
+        await client.send("MODE " & bot.nick & " +BI") # set as bot and hide channel list in WHOIS
     if event.cmd == MPrivMsg:
       var msg = event.params[event.params.high]
       case msg
