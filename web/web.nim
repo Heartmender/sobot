@@ -5,6 +5,7 @@ var t = parsetoml.parseFile("../sobot.toml")
 include "./templates/main.tmpl"
 include "./templates/error.tmpl"
 include "./templates/logs.tmpl"
+include "./templates/summary.tmpl"
 
 var
   dbhost = t.getString("database.host")
@@ -14,6 +15,8 @@ var
 
   db = db_mysql.open(dbhost, dbuser, dbpass, dbname)
   query = sql"SELECT id, mytime, nick, line FROM Chatlines WHERE target = ?"
+  distinctquery = sql"SELECT DISTINCT target FROM Chatlines;"
+  calloutquery = sql"SELECT id, target, mytime, nick, line FROM Chatlines WHERE target = ? ORDER BY id DESC LIMIT 1;"
 
 const
   robotstxt      = staticRead "robots.txt"
@@ -27,7 +30,14 @@ routes:
     resp robotstxt, "text/plain"
 
   get "/":
-    resp "No logs selected".errorPage.baseTemplate
+    var
+      channels = db.getAllRows(distinctquery)
+      res: seq[TRow]
+
+    for channelseq in channels:
+      res = res & db.getRow(calloutquery, channelseq[0])
+
+    resp res.logSummary.baseTemplate
 
   get "/logs/@channel":
     var
