@@ -1,0 +1,2 @@
+.gitignore
+: web.nim |> nim c --nimcache:".nimcache" web.nim && rm -rf .nimcache |> web

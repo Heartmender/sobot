@@ -1,0 +1,2 @@
+.gitignore
+: sobot.nim |> nim c --nimcache:".nimcache" -o:sobot sobot.nim && rm -rf .nimcache |> sobot

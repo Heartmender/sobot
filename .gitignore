@@ -4,3 +4,4 @@ src/sobot
 sobot.db
 sobot.toml
 *.so
+.tup

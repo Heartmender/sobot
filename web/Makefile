@@ -1,2 +1,0 @@
-all:
-	nimble build
