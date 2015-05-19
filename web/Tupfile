@@ -1,2 +1,3 @@
 .gitignore
-: web.nim |> nim c --nimcache:".nimcache" web.nim && rm -rf .nimcache |> web
+include_rules
+: web.nim |> nim c $(NIMFLAGS) web.nim && rm -rf .nimcache |> web

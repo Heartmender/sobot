@@ -1,0 +1,3 @@
+NIMFLAGS += --nimcache:".nimcache"
+NIMFLAGS += --deadcodeElim:on
+#NIMFLAGS += -d:release

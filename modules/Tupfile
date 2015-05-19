@@ -1,2 +1,3 @@
 .gitignore
-: foreach *.nim |> nim c --nimcache:".nimcache" --deadcodeElim:on -d:release --app:lib -o:"%o" %f && rm -rf .nimcache |> %B.so
+include_rules
+: foreach *.nim |> nim c $(NIMFLAGS) --app:lib -o:"%o" %f && rm -rf .nimcache |> %B.so

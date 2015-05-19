@@ -1,2 +1,3 @@
 .gitignore
-: sobot.nim |> nim c --nimcache:".nimcache" -o:sobot sobot.nim && rm -rf .nimcache |> sobot
+include_rules
+: sobot.nim |> nim c $(NIMFLAGS) -o:sobot sobot.nim && rm -rf .nimcache |> sobot
